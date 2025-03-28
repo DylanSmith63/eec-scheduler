@@ -9,6 +9,7 @@
 #define Scheduler_hpp
 
 #include <vector>
+#include <iostream>
 
 #include "Interfaces.h"
 
@@ -22,6 +23,8 @@ public:
     void Shutdown(Time_t now);
     void TaskComplete(Time_t now, TaskId_t task_id);
 private:
+    vector<double> machine_load;
+    vector<bool> machine_active;
     vector<VMId_t> vms;
     vector<MachineId_t> machines;
 };

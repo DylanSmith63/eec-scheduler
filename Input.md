@@ -37,5 +37,3 @@ task class:
         Task type: WEB
         Seed: 520230
 }
-
-

@@ -9,6 +9,7 @@
 
 static bool migrating = false;
 static unsigned active_machines = 16;
+//static unsigned active_machines = Machine_GetTotal();
 
 void Scheduler::Init() {
     // Find the parameters of the clusters
@@ -21,6 +22,9 @@ void Scheduler::Init() {
     // 
     SimOutput("Scheduler::Init(): Total number of machines is " + to_string(Machine_GetTotal()), 3);
     SimOutput("Scheduler::Init(): Initializing scheduler", 1);
+    /*for (int i = 0; i < active_machines; i++) {
+        cout << Machine_GetInfo(MachineId_t(i)).num_cpus << endl;
+    }*/
     for(unsigned i = 0; i < active_machines; i++)
         vms.push_back(VM_Create(LINUX, X86));
     for(unsigned i = 0; i < active_machines; i++) {
@@ -64,12 +68,13 @@ void Scheduler::NewTask(Time_t now, TaskId_t task_id) {
     // Turn on a machine, migrate an existing VM from a loaded machine....
     //
     // Other possibilities as desired
+    cout << "new task: " << task_id << endl;
     Priority_t priority = (task_id == 0 || task_id == 64)? HIGH_PRIORITY : MID_PRIORITY;
     if(migrating) {
         VM_AddTask(vms[0], task_id, priority);
     }
     else {
-        VM_AddTask(vms[task_id % active_machines], task_id, priority);
+        VM_AddTask(vms[0], task_id, priority);
     }// Skeleton code, you need to change it according to your algorithm
 }
 
