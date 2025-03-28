@@ -10,6 +10,7 @@
 
 #include <vector>
 #include <iostream>
+#include <queue>
 
 #include "Interfaces.h"
 
@@ -23,10 +24,12 @@ public:
     void Shutdown(Time_t now);
     void TaskComplete(Time_t now, TaskId_t task_id);
 private:
-    vector<double> machine_load;
-    vector<bool> machine_active;
-    vector<VMId_t> vms;
-    vector<MachineId_t> machines;
+    unsigned get_id(MachineState_t state, CPUType_t cpu_type, bool gpu_enabled);
+    unsigned get_virtual_id(VMType_t vm_state, SLAType_t state, CPUType_t cpu_type, bool gpu_enabled);
+    void MonitorQueue(unsigned vm_id);
+    vector<vector<MachineId_t>> machines;
+    vector<vector<VMId_t>> vms;
+    vector<queue<TaskId_t>> queues;
 };
 
 
